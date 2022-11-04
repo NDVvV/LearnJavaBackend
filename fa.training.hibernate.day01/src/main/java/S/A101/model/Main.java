@@ -1,10 +1,9 @@
-import model.Department;
-import model.Employee;
-import org.hibernate.Session;
-import pojo.HibernateUtils;
+package S.A101.model;
 
-import javax.persistence.*;
-import java.util.List;
+import S.A101.model.Employee;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import pojo.HibernateUtils;
 
 public class Main {
     public static void main(String[] args) {
@@ -72,6 +71,7 @@ public class Main {
 
         //****************HIBERNATE*******************
         Session session = HibernateUtils.getFactory().openSession();
+        Transaction transaction = session.getTransaction();
 
         try {
             //Thêm mới đối tượng
@@ -96,11 +96,15 @@ public class Main {
 //            Query q = session.createQuery("FROM Department");
 //            List<Department> ds = q.getResultList();
 //            ds.forEach(d -> System.out.printf(d.getId() + " + " + d.getName() +"\n"));
+            Employee emp = new Employee();
+            emp.setFirstName("Duc");
+            emp.setLastName("Viet");
+            session.save(emp);
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            if(session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
+            if(transaction.isActive()) {
+                transaction.rollback();
             }
             session.close();
         }
