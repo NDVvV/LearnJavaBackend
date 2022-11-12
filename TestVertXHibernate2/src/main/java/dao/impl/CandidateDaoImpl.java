@@ -83,7 +83,7 @@ public class CandidateDaoImpl implements CandidateDao {
         Root<Candidate> cRoot = query.from(Candidate.class);
         Join<Candidate, EntryTest> candidateEntryTestJoin = cRoot.join("entryTests");
 
-        List<Candidate> candidates = null;
+        List<Candidate> candidate = null;
         try {
 
             query.select(cRoot);
@@ -91,14 +91,14 @@ public class CandidateDaoImpl implements CandidateDao {
             Predicate p2 = builder.equal(candidateEntryTestJoin.get("entryTestSkill"), eTSkill);
             query = query.where(builder.and(p1, p2));
 
-            candidates= session.createQuery(query).getResultList();
+            candidate= session.createQuery(query).getResultList();
 
             session.close();
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return candidates;
+        return candidate;
 
     }
 
